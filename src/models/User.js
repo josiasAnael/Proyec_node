@@ -1,4 +1,6 @@
-import {Schema, model} from "mongoose";
+import mongoose from 'mongoose';
+const { Schema, model } = mongoose;
+
 import bcrypt from 'bcryptjs';
 
 //me falta poner las fecha en que inicia la practica

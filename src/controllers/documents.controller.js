@@ -1,4 +1,4 @@
- import Document from '../models/Documents'
+ import Document from '../models/Documents.js'
 
 
 //crear el documento

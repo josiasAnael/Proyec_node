@@ -1,12 +1,11 @@
 {
-  "name": "Proyect-Node",
+  "name": "proyectnode",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
+  "type": "module",
+  "description": "",
   "scripts": {
-    "build": "babel src --out-dir build",
-    "dev": "nodemon src/index.js --exec babel-node",
-    "start": "node build/index.js"
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "JosiasMartinez",
@@ -14,19 +13,15 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^15.0.0",
+    "dotenv": "^16.0.0",
     "express": "^4.17.2",
-    "googleapis": "^39.2.0",
+    "googleapis": "^94.0.0",
     "helmet": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.0.12",
+    "mongoose": "^6.2.0",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.16.8",
-    "@babel/core": "^7.16.12",
-    "@babel/node": "^7.16.8",
-    "@babel/preset-env": "^7.16.11",
     "nodemon": "^2.0.15"
   }
 }
