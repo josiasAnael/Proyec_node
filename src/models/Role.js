@@ -4,8 +4,7 @@ const { Schema, model } = mongoose;
 export const ROLES =["user", "admin"]
 
  const roleShema = new Schema({
-    
-     name: String 
+    name: String 
  },{
      versionKey: false
  })

@@ -5,15 +5,16 @@ import Role from "../models/Role.js"
 
 export const verifyToken = async(req, res, next)=>{
     try {
-        const token = req.headers["x-access-token"]
-        //console.log(token)
+        const token = req.headers.authorization.split(" ")[1]
+
 
         if (!token) return res.status(403).json({message:"no token provided"})
-        
+       
+
         const decoded = jwt.verify(token,config.SECRET)
         req.userId = decoded.id
 
-        const user = await User.findById(req.userId, {password: 0})
+        const user = await User.findById(req.userId)
         if (!user) return res.status(404).json({message:"user no found"})
 
         //console.log(decoded)
@@ -24,29 +25,19 @@ export const verifyToken = async(req, res, next)=>{
 }
 export const isAdmin = async (req, res, next) =>{
     const user = await User.findById(req.userId)
-    const roles = await Role.find({_id: {$in: user.roles}})
-    console.log(roles)
-    for(let i=0; i< roles.length; i++){
-        if(roles[i].name === "admin")
-        {
-            next()
-        }
-        return
-    }
-    return res.status(403).json({message:"requiere rol de admin"})
+    console.log(user);
+    const role = await Role.findById(user.role)
+    if (role.name !== "admin") return res.status(401).json({message:"no autorizado"})
+    next()
+
+    // console.log(roles)
+    
+    // return res.status(403).json({message:"requiere rol de admin"})
     
 }
 
 export const isUser = async (req, res, next) =>{
     const user = await User.findById(req.userId)
-    const roles = await Role.find({_id: {$in: user.roles}})
-    console.log(roles)
-    for(let i=0; i< roles.length; i++){
-        if(roles[i].name === "user")
-        {
-            next()
-        }
-        return
-    }
+    if (user.rol.name!=="admin") next()
     return res.status(403).json({message:"requiere rol de admin"})  
 }

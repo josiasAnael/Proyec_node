@@ -5,15 +5,15 @@ import bcrypt from 'bcryptjs';
 
 //me falta poner las fecha en que inicia la practica
 const userSchema = new Schema({
-    username:{
+    name:{
         type: String,
         unique: true
     },
-    identity:{
+    accountnumber:{
         type: String,
         unique: true
     },
-    email:{
+    email:{ //correo institucional
         type: String,
         unique:true
     },
@@ -25,10 +25,22 @@ const userSchema = new Schema({
         type: String,
         unique:true
     },
-    roles:[{
+    role:{
         ref: "Role", //ref esta relacionado con otro modelo 
         type: Schema.Types.ObjectId,
-    }]
+    },
+    InitPractice:{
+        type: Date,
+        default: Date.now()
+    },
+    EndPractice:{
+        type: Date,
+        // default: Date.now()
+    },
+    status:{
+        type: Boolean,
+        default: true
+    },
 },{
         timestamps: true,
         versionKey: false,

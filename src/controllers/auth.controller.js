@@ -6,6 +6,7 @@ import Role from '../models/Role.js';
 
 export const  signUp = async(req, res)=>{
     const {username, identity, email, password, career, role} = req.body;
+    
     //Todo validar si ya existe
 
     
@@ -32,22 +33,21 @@ export const  signUp = async(req, res)=>{
         expiresIn: 86400// 24 horas
     })
     res.status(200).json({user:savedUser, token}) //devolvemos el token
-    res.json('signUp')
 }
 
 // 3/2/2022
 export const  signIn = async(req, res)=>{  //inicio de sesion
-    const userFound = await User.findOne({identity: req.body.identity}).populate("roles")//enviamos el rol del usuario
-    if (!userFound) return res.status(200).json({Message: "User not found"})
+    const userFound = await User.findOne({identity: req.body.identity}).populate("role")//enviamos el rol del usuario
+    if (!userFound) return res.status(400).json({Message: "User not found"})
     
     //compara las contraseñas
     const matchPassword = await User.comparePassword(req.body.password, userFound.password)
     
-    if (!matchPassword) return res.status(401).json({token: null, message:' invalid password'})
+    if (!matchPassword) return res.status(401).json({token: null, message:' invalid user or password '})
     
-    jwt.sign({id: userFound._id}, config.SECRET,{
+    const token = jwt.sign({id: userFound._id}, config.SECRET,{
         expiresIn:86400
     })
-
+    // console.log(token);
     res.json({token})
 }

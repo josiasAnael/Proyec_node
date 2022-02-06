@@ -10,4 +10,6 @@ router.post('/', [
 ]  ,userController.createUser)
 
 
+router.get('/', userController.getUsers)
+
 export default router;

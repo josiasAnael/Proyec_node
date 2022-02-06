@@ -5,7 +5,7 @@ const { Schema, model } = mongoose;
 const documentSchema = new Schema({
     name: { type: String, required: true },
     url: { type: String, required: true },
-    status: { type: Boolean, default: false },
+    status: { type: String, default: 'Pending', enum: ['Pending','Sending', 'Approved', 'Deprecated'] },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
 
 },{
