@@ -17,7 +17,7 @@ const userSchema = new Schema({
         type: String,
         unique:true
     },
-    password:{
+    password:{ 
         type: String,
         required: true
     },
@@ -25,10 +25,10 @@ const userSchema = new Schema({
         type: String,
         unique:true
     },
-    roles:{
+    roles:[{
         ref: "Role", //ref esta relacionado con otro modelo 
         type: Schema.Types.ObjectId,
-    }
+    }]
 },{
         timestamps: true,
         versionKey: false,

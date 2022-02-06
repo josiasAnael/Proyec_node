@@ -35,6 +35,19 @@ export const  signUp = async(req, res)=>{
     res.json('signUp')
 }
 
+// 3/2/2022
 export const  signIn = async(req, res)=>{  //inicio de sesion
-    res.json('signIn')
+    const userFound = await User.findOne({identity: req.body.identity}).populate("roles")//enviamos el rol del usuario
+    if (!userFound) return res.status(200).json({Message: "User not found"})
+    
+    //compara las contraseñas
+    const matchPassword = await User.comparePassword(req.body.password, userFound.password)
+    
+    if (!matchPassword) return res.status(401).json({token: null, message:' invalid password'})
+    
+    jwt.sign({id: userFound._id}, config.SECRET,{
+        expiresIn:86400
+    })
+
+    res.json({token})
 }

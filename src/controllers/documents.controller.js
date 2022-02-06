@@ -3,8 +3,10 @@
 
 //crear el documento
 export const createDocument = async (req, res)=>{
-    const{name, studentidentity,  witnessidentityone, witnessidentitytwo, collegetitle , acceptanceletter, fileopening , residentialrecord, practicalrequest, revicionControl, monographguide} = req.body
-    const newDocument = new Document({name, studentidentity,  witnessidentityone, witnessidentitytwo, collegetitle , acceptanceletter, fileopening , residentialrecord, practicalrequest, revicionControl, monographguide})
+    //const{name, studentidentity,  witnessidentityone, witnessidentitytwo, collegetitle , acceptanceletter, fileopening , residentialrecord, practicalrequest, revicionControl, monographguide} = req.body
+    //const newDocument = new Document({name, studentidentity,  witnessidentityone, witnessidentitytwo, collegetitle , acceptanceletter, fileopening , residentialrecord, practicalrequest, revicionControl, monographguide})
+    const{name, url, status, user} = req.body
+    const newDocument = new Document({name, url, status, user})
     console.log(req.body)
     
     const documentSaved = await newDocument.save()

@@ -3,6 +3,7 @@ import morgan from "morgan"
 // import pkg from '../package.json'
 import documentsRoutes from './routes/documents.routes.js'
 import authRoutes from './routes/auth.routes.js'
+import usersRoutes from './routes/user.routes.js'
 import { createRoles } from "./libs/initial.js"
 
 
@@ -33,5 +34,6 @@ app.get('/', (req,res)=>{
 
 app.use('/api/documents',documentsRoutes)   //importar Documents
 app.use('/api/auth', authRoutes)
+app.use('/api/users', usersRoutes )
 
 export default app
