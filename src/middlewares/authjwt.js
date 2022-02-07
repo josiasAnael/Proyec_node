@@ -25,11 +25,11 @@ export const verifyToken = async(req, res, next)=>{
 }
 export const isAdmin = async (req, res, next) =>{
     const user = await User.findById(req.userId)
-    console.log(user);
+    // console.log(user);
     const role = await Role.findById(user.role)
     if (role.name !== "admin") return res.status(401).json({message:"no autorizado"})
     next()
-
+    
     // console.log(roles)
     
     // return res.status(403).json({message:"requiere rol de admin"})
@@ -38,6 +38,7 @@ export const isAdmin = async (req, res, next) =>{
 
 export const isUser = async (req, res, next) =>{
     const user = await User.findById(req.userId)
-    if (user.rol.name!=="admin") next()
-    return res.status(403).json({message:"requiere rol de admin"})  
+    const role = await Role.findById(user.role)
+    if (role.name === "admin") return res.status(403).json({message:"requiere rol de user"})
+    next()
 }

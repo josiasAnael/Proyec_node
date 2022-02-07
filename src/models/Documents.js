@@ -7,6 +7,7 @@ const documentSchema = new Schema({
     url: { type: String, required: true },
     status: { type: String, default: 'Pending', enum: ['Pending','Sending', 'Approved', 'Deprecated'] },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
+    feedback: { type: String, default: '' },
 
 },{
     timestamps:true,                // guarda la fecha creacion y de actualizacion
