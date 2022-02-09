@@ -26,7 +26,7 @@ export const sendEmail = async (req, res) => {
         <p> </p>
     `;
   try {
-    oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN })
+    oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
     const accessToken = await oAuth2Client.getAccessToken();
     const tranporter = createTransport({
       service: "gmail",
@@ -86,34 +86,53 @@ export const sendEmail = async (req, res) => {
 };
 
 export const createFolder = (req, res) => {
-  const { CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN } = process.env;
+  const { CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN_DRIVE } =
+    process.env;
 
   const oAuth2Client = new google.auth.OAuth2(
     CLIENT_ID,
     CLIENT_SECRET,
     REDITECT_URL
   );
-  oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+  const SCOPES = [
+    "https://www.googleapis.com/auth/drive",
+    "https://www.googleapis.com/auth/drive.file",
+    
+  ];
 
-  const drive = google.drive({ version: "v3", auth: oAuth2Client });
+  const authUrl = oAuth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: SCOPES,
+  });
+  console.log('Authorize this app by visiting this url:', authUrl);
+  oAuth2Client.getToken("4/0AX4XfWjlNizcFB4yN9Ab7MrZhZxiPBin3KIxQK6Y5AhTJrSZ66m6calKNSEiPgsBGqEXng", (err, token) => {
+    if (err) return console.error("Error retrieving access token", err);
+    oAuth2Client.setCredentials(token);
+    // Store the token to disk for later program executions
 
-  var fileMetadata = {
-    name: "Invoices",
-    mimeType: "application/vnd.google-apps.folder",
-  };
-  drive.files.create(
-    {
-      resource: fileMetadata,
-      fields: "id",
-    },
-    function (err, file) {
-      if (err) {
-        // Handle error
-        console.error(err);
-      } else {
-        res.json({ message: "carpeta creada" });
-        // console.log('Folder Id: ', file.id);
+    // console.log(url);
+    // oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN_DRIVE });
+
+    const drive = google.drive({ version: "v3", auth: oAuth2Client });
+
+    var fileMetadata = {
+      name: "Invoices",
+      mimeType: "application/vnd.google-apps.folder",
+    };
+    drive.files.create(
+      {
+        resource: fileMetadata,
+        fields: "id",
+      },
+      function (err, file) {
+        if (err) {
+          // Handle error
+          console.error(err);
+        } else {
+          res.json({ message: "carpeta creada" });
+          // console.log('Folder Id: ', file.id);
+        }
       }
-    }
-  );
+    );
+  });
 };
