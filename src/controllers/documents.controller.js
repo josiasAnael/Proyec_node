@@ -1,4 +1,4 @@
- import Document from '../models/Documents.js'
+import Document from '../models/Documents.js'
 import User from '../models/User.js'
 
 
