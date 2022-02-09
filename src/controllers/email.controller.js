@@ -92,15 +92,16 @@ export const createFolder = (req, res) => {
   const oAuth2Client = new google.auth.OAuth2(
     CLIENT_ID,
     CLIENT_SECRET,
-    "HTTP://localhost:3000/api/drive/drive"
+    REDITECT_URL
   );
   oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
   // console.log('Authorize this app by visiting this url:', authUrl);
   const drive = google.drive({ version: "v3", auth: oAuth2Client });
   
       var fileMetadata = {
-        name: "Invoices",
+        name: "hola2",
         mimeType: "application/vnd.google-apps.folder",
+        parents:"1wJcCAHvew3tBs6S1vLCuvQGcIalICpWw"
       };
       drive.files.create(
         {
@@ -112,9 +113,10 @@ export const createFolder = (req, res) => {
             // Handle error
             console.error(err);
           } else {
-            res.json({ message: "carpeta creada" });
+            res.json({ message: "carpeta creada", file });
             // console.log('Folder Id: ', file.id);
           }
         }
       );
+    
 };
