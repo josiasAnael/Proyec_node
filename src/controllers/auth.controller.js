@@ -45,7 +45,7 @@ export const  signIn = async(req, res)=>{  //inicio de sesion
     
     if (!matchPassword) return res.status(401).json({token: null, message:' invalid user or password '})
     
-    const token = jwt.sign({id: userFound._id}, config.SECRET,{
+    const token = jwt.sign({id: req.body.identity}, config.SECRET,{
         expiresIn:86400
     })
     // console.log(token);

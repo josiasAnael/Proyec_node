@@ -14,10 +14,11 @@ export const verifyToken = async(req, res, next)=>{
         const decoded = jwt.verify(token,config.SECRET)
         req.userId = decoded.id
 
-        const user = await User.findById(req.userId)
+        const user = await User.findOne({identity: req.userId})
+        console.log(user);
         if (!user) return res.status(404).json({message:"user no found"})
-
         //console.log(decoded)
+        req.userLogged = user
         next()
     } catch (error) {
         return res.status(401).json({message: 'No autorizado'})

@@ -40,6 +40,7 @@ Authorization: Bearer {{token}}
 ###
 POST {{hostname}}/drive/drive HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ###
 POST {{hostname}}/drive/ HTTP/1.1
