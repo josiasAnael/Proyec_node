@@ -1,47 +1,106 @@
+## Asignacion variable del puerto
 @hostname=http://localhost:3000/api
 
-###
+@token= {{login.response.body.token}}
+
+### Obtencion de usuario
 GET {{hostname}}/users/ HTTP/1.1
-
+Content-Type: application/json
+Authorization: Bearer {{token}}
 ###
 
-#login
+#login administrador
 # @name login
 POST {{hostname}}/auth/signin HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "josias199749@gmail.com",
-  "password": "1234"
+  "accountnumber": "070319999",
+  "password": "12345"
 }
 
-# {
-#   "email": "anaana@gmail.com",
-#   "password": "1234"
-# }
-###
-@token= {{login.response.body.token}}
 ###
 
+#login user
+# @name login
+POST {{hostname}}/auth/signin HTTP/1.1
+Content-Type: application/json
+
+{
+  "accountnumber": "070319998",
+  "password": "12345"
+}
+###
+### Obtencion de usuario
+GET {{hostname}}/users/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+
+
+### Insersion de usuario
+POST {{hostname}}/auth/signup/ HTTP/1.1 
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "username": "Luisssss",
+  "accountnumber": "07103199998",
+  "email": "jos1ias12@gmal.com",
+  "password":"12345",
+  "career":"ing sistema"
+}
+
+
+
+### Crear un usuario desde el sistema
+POST {{hostname}}/users/createUser HTTP/1.1 
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "username": "9988899",
+  "accountnumber": "9988899",
+  "email": "7777.com",
+  "password":"1234",
+  "career":"ing sistema"
+}
+
+###
+
+###
+
+### Obtener los documentos
 GET {{hostname}}/documents HTTP/1.1
 Authorization: Bearer {{token}}
 
 ###
+
+## Insetar un documento 
 POST {{hostname}}/documents HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-
 {
-  "name": "Documento 1",
+  "name": "studentidentity",
   "url": "http://www.google.com"
 }
 
+### Crear una carpeta en google drive
+POST {{hostname}}/drive/CreateFolder HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
 ###
-POST {{hostname}}/drive/drive HTTP/1.1
+
+## Filtrar todos los documentos
+GET {{hostname}}/drive/AllFolder HTTP/1.1
+
+
+### ENVIAR EMAIL
+POST {{hostname}}/drive/ HTTP/1.1 
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ###
-POST {{hostname}}/drive/ HTTP/1.1
-Content-Type: application/json
+
+
