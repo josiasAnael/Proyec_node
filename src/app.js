@@ -6,9 +6,13 @@ import authRoutes from './routes/auth.routes.js'
 import usersRoutes from './routes/user.routes.js'
 import { createRoles } from "./libs/initial.js"
 import createFolder from './routes/mail.routes.js'
+import cors from 'cors'
 
 const app  = express()
 createRoles()
+app.use(cors({
+    origin: '*'
+}));
 
 
 // app.set('pkg', pkg)
