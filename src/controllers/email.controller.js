@@ -1,10 +1,10 @@
-//import { Router } from 'express'
+
 import { createTransport } from "nodemailer";
 import { google } from "googleapis";
-import emailSchema from "../models/email.js";
+// import emailSchema from "../models/email.js";
 import User from "../models/User.js";
 
-import documentSchema from "../models/document.js";
+// import documentSchema from "../models/document.js";
 
 
 export const sendEmail = async (req, res) => {
@@ -22,20 +22,23 @@ export const sendEmail = async (req, res) => {
  
     const email2 = User.find(email1._id)
     console.log(email2._id);
+    // documentSchema.find
 
     /* enviar los pdf por correo*/
-    let contentHTML = `
-    <h1>Hola ${email2.username}</h1>
-    <p>
-    <h2>Estos son los pdf que has subido</h2>
-    <ul>
-      <li>${documentSchema.name}</li>
-      <li>${documentSchema.status}</li>
-      <li>${documentSchema.feedback}</li>
-    </ul>
-    </p>
+    // let contentHTML = `
+    // <h1>Hola ${email2.username}</h1>
+    // <p>
+    // <h2>Estos son los pdf que has subido</h2>
+    // <ul>
+    //   <li>${documentSchema.name}</li>
+    //   <li>${documentSchema.status}</li>
+    //   <li>${documentSchema.feedback}</li>
+    // </ul>
+    // </p>
   
-    `;
+    // `;
+
+    let contentHTML = ``;
 
     
 

@@ -10,8 +10,8 @@ const documentSchema = new Schema({
     feedback: { type: String, default: '' },
 
 },{
-    timestamps:true,              
-    verisonKey: false     
+    timestamps:true,                // guarda la fecha creacion y de actualizacion
+    verisonKey: false              // para cada vez que se crea un documento
 })
 
 
