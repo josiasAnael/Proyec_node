@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import config from '../database/config.js'
 import Role from '../models/Role.js';
 
+
 export const createUser = async (req, res)=>{
     try{
         const {_id,username,email,password,career,roles} = req.body
@@ -52,7 +53,6 @@ export const getUsers = (req, res)=>{
 
 export const getUser = (req, res)=>{
     try {
-    
         User.findById(req.params.id)
         .then(user =>{
             res.json(user)
@@ -61,7 +61,7 @@ export const getUser = (req, res)=>{
             res.json(err)
         })
     }
-    catch(error){
+    catch(error){   
         res.status(401).json(`Error al obtener el usuario ${error}`)
     }
 }
@@ -93,5 +93,26 @@ export const deleteUser = (req, res)=>{
         })
     } catch (error) {
         res.status(401).json(`Error al eliminar el usuario ${error}`)      
+    }
+}
+
+export const updatePassword = (req, res)=>{
+    try {
+        User.findById(req.params.id)
+        .then(user =>{
+            user.password = req.body.password
+            user.save()
+            .then(user =>{
+                res.json(user)
+            })
+            .catch(err =>{
+                res.json(err)
+            })
+        })
+        .catch(err =>{
+            res.json(err)
+        })
+    } catch (error) {
+        res.status(401).json(`Error al actualizar el usuario ${error}`)      
     }
 }

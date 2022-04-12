@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 import bcrypt from 'bcryptjs';
 
-//me falta poner las fecha en que inicia la practica
+
 const userSchema = new Schema({
     username:{
         type: String,
@@ -14,7 +14,7 @@ const userSchema = new Schema({
         unique: true,
         trim: true,
     },
-    email:{ //correo institucional
+    email:{
         type: String,
         unique:false,
         trim: true,
@@ -24,7 +24,7 @@ const userSchema = new Schema({
         required: false,
         trim: true,
     },
-    career:{        //carrera estudia
+    career:{  
         type: String,
         unique:false
     },
@@ -34,7 +34,7 @@ const userSchema = new Schema({
     },
     roles:{
         type: Schema.Types.ObjectId,
-        ref: "Role", //ref esta relacionado con otro modelo 
+        ref: "Role",
         
     },
     InitPractice:{
@@ -43,7 +43,7 @@ const userSchema = new Schema({
     },
     EndPractice:{
         type: Date,
-        // default: Date.now()
+        
     },
     status:{
         type: Boolean,
@@ -56,14 +56,14 @@ const userSchema = new Schema({
 )
 
 userSchema.statics.encryptPassword = async (password)=>{
-    const salt = await bcrypt.genSaltSync(10) //metodo para aplicar un algoritmo que le damos al recorrido de cifrado
+    const salt = await bcrypt.genSaltSync(10) 
     return await bcrypt.hashSync(password, salt)
-} //metodo para hacer un cifrado, retorna un true o un false
+}
 
 
 userSchema.statics.comparePassword = async (password, receviedPassword)=>{
     return await bcrypt.compare(password, receviedPassword)
-} //metodo  comparar contraseña, retorna un true o un false
+} 
 
 
 export default model('User', userSchema);

@@ -4,6 +4,8 @@ import { google } from "googleapis";
 import emailSchema from "../models/email.js";
 import User from "../models/User.js";
 
+import documentSchema from "../models/document.js";
+
 
 export const sendEmail = async (req, res) => {
   try {
@@ -21,15 +23,21 @@ export const sendEmail = async (req, res) => {
     const email2 = User.find(email1._id)
     console.log(email2._id);
 
+    /* enviar los pdf por correo*/
     let contentHTML = `
-          <h1>Hola hermosa<h1>
-          <ul>
-              <li> </li>
-              <li> Url: </li>
-              <li> Desde:</li> 
-          </ul>
-          <p> </p>
-      `;
+    <h1>Hola ${email2.username}</h1>
+    <p>
+    <h2>Estos son los pdf que has subido</h2>
+    <ul>
+      <li>${documentSchema.name}</li>
+      <li>${documentSchema.status}</li>
+      <li>${documentSchema.feedback}</li>
+    </ul>
+    </p>
+  
+    `;
+
+    
 
     oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
     const accessToken = await oAuth2Client.getAccessToken();
@@ -44,7 +52,6 @@ export const sendEmail = async (req, res) => {
         accessToken: accessToken,
       },
     });
-    console.log()
     //console.log(req.userLogged)
     const mailOptions = {
       from: "pagina web Unicah <req.userLogged.email>",

@@ -86,6 +86,20 @@ export const updateDocumentById = async (req, res)=>{
     }
 }
 
+//Actulizar el status del documento
+export const updateStatusDocument = async (req, res)=>{
+    try{
+        const updateDocument = await Document.findByIdAndUpdate(req.params.id, {status: req.body.status}, {
+            new: true
+        })
+        res.status(200).json(updateDocument) //no hay contenido pero a sido satisfactorio
+
+    } catch (error) {
+        res.status(401).json(`error actualizar un documento ${error}`)
+    }
+}
+
+
 //Eliminar el documento por Id
 export const deleteDocumentById = async (req, res)=>{
     try {     
