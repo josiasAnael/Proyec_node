@@ -12,9 +12,7 @@ export const verifyToken = async(req, res, next)=>{
         console.log("HOLAA")
         const decoded = jwt.verify(token,config.SECRET)
         req.userId = decoded.id
-        console.log("hola");
         console.log(req.userId);
-        console.log("hola");
 
         const user = await User.findOne({accountnumber: req.userId})
         console.log(user);

@@ -37,7 +37,7 @@ app.get('/', (req,res)=>{
 
 app.use('/api/documents',documentsRoutes)   //importar Documents
 app.use('/api/auth', authRoutes)
-app.use('/api/users', usersRoutes )
+app.use('/api/users', usersRoutes)
 
 app.use('/api/drive', createFolder)
 

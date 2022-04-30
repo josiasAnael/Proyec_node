@@ -5,8 +5,7 @@ import {authjwt} from "../middlewares/index.js";
 const router = Router()
 router.post('/',[authjwt.verifyToken], EmailController.sendEmail)
 
-router.post('/CreateFolder', [authjwt.verifyToken], EmailController.createFolder)
+router.post('/upload', [authjwt.verifyToken], EmailController.uploadFile)
 
-router.get('/AllFolder',EmailController.readFiles)
 
 export default router;

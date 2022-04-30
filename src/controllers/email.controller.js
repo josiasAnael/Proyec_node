@@ -84,82 +84,36 @@ export const sendEmail = async (req, res) => {
     });
   } catch (er) {
     console.log(er) 
-    return res.status(400).json(er)
+    return res.status(401).json(er)
      
   }
 };
 
 //<!------------GOOGLE DRIVE----------!>
-export const createFolder = (req, res) => {
+export const uploadFile = async (req, res)  => {
   try {
     const { CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN } = process.env;
 
-    const oAuth2Client = new google.auth.OAuth2(
-      CLIENT_ID,
-      CLIENT_SECRET,
-      REDITECT_URL
-    );
+    const service = new GoogleDriveService(CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN);
 
-    //var parents = file.config.data.parents  
+    const user = req.userLogged;
 
-    oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
-    // console.log('Authorize this app by visiting this url:', authUrl);
-    const drive = google.drive({ version: "v3", auth: oAuth2Client });
+    let folderId = await service.searchFolder(user.accountnumber);
 
-    console.log(req.userLogged._id);
+    if (!folderId) {
+      folderId = await service.createFolder(user.accountnumber);
+    }
 
-    var fileMetadata = {
-      name: req.userLogged._id,
-      mimeType: "application/vnd.google-apps.folder",
-      parents: ["1wJcCAHvew3tBs6S1vLCuvQGcIalICpWw"],
-    };
-    drive.files.create(
-      {
-        resource: fileMetadata,
-        fields: "id",
-      },
-      function (err, file) {
-        if (err) {
-          // Handle error
-          console.error(err);
-        } else {
-          res.json({ message: "carpeta creada", file });
-          // console.log('Folder Id: ', file.id);
-        }
-        //
-      }
-    );
+    const file = await service.uploadFile(req.file, folderId);
+
+    res.json({
+      message: "Archivo subido",
+      file,
+    });
+
 
   } catch (error) {
     console.status(401).json({ message: "error al crear el folder" `${error}`})  
   }
 };
 
-export const readFiles = (req, res) => {
-   try {
-    const { CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN } = process.env;
-
-    const oAuth2Client = new google.auth.OAuth2(
-      CLIENT_ID,
-      CLIENT_SECRET,
-      REDITECT_URL
-    );
-    oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
-    const drive = google.drive({ version: "v3", auth: oAuth2Client });
-    drive.files.list(
-      {
-        pageSize: 10,
-        fields: "nextPageToken, files(id, name)",
-      },
-      function (err, respoce) {
-        if (err) {
-          console.error(err);
-        } else {
-          res.json({ message: "exito", file: respoce });
-        }
-      }
-    );
-  } catch (error) {
-    res.status(401).json(`error al obtener leer drive ${error}`)   
-  }
-};
