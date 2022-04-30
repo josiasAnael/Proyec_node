@@ -8,15 +8,9 @@ export const verifyToken = async(req, res, next)=>{
         const token = req.headers.authorization.split(" ")[1]
         
         if (!token) return res.status(403).json({message:"no token provided"})
-        
-        console.log("HOLAA")
         const decoded = jwt.verify(token,config.SECRET)
         req.userId = decoded.id
-        console.log(req.userId);
-
         const user = await User.findOne({accountnumber: req.userId})
-        console.log(user);
-        
         if (!user) return res.status(404).json({message:"user no found"})
         //console.log(decoded)
         req.userLogged = user

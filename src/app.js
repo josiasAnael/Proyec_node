@@ -7,7 +7,7 @@ import usersRoutes from './routes/user.routes.js'
 import { createRoles } from "./libs/initial.js"
 import googleRoutes from './routes/google.routes.js'
 import cors from 'cors'
-
+import fileUpload from 'express-fileupload'
 const app  = express()
 createRoles()
 app.use(cors({
@@ -17,7 +17,11 @@ app.use(cors({
 
 // app.set('pkg', pkg)
 
-
+// enable files upload
+app.use(fileUpload({
+    useTempFiles : true,
+    tempFileDir : '/tmp/'
+}));
 //modo de desarrollo
 app.use(morgan('dev'))
 //app.use('./controllers/email.controller.js')
