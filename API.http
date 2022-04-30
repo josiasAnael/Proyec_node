@@ -1,15 +1,6 @@
 ## Asignacion variable del puerto
 ##@hostname=http://localhost:3000/api
-<<<<<<< Updated upstream
-
-###############################################################################
-### Url de la API
-@hostname=https://apiunicah.herokuapp.com:3000/api
-
-### token de prueba
-=======
 @hostname=https://apiunicah.herokuapp.com/api
->>>>>>> Stashed changes
 @token= {{login.response.body.token}}
 
 ## Id del usuario

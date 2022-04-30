@@ -8,10 +8,10 @@ export const sendEmail = async (req, res) => {
 
     const { CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN } = process.env;
     const service =new GoogleMailService (CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN);
-    
+    const user = req.userLogged;
     let contentHTML = ``;
     contentHTML += `<h1>Hola ${req.body.name}</h1>`;
-    service.sendMail(req.body.email, contentHTML, "Bienvenido a la pagina web de Unicah").then(response => {
+    service.sendMail(user.email, contentHTML, "Bienvenido a la pagina web de Unicah").then(response => {
       res.status(200).json(response);
     }).catch(err => {
       res.status(500).json(err);
