@@ -7,7 +7,7 @@ export class GoogleMailService{
         this.mailClient = this.createDriveClient(clientId, clientSecret, redirectUri, refreshToken);
     }
 
-    createMailClient(clientId, clientSecret, redirectUri, refreshToken) {
+    async createMailClient(clientId, clientSecret, redirectUri, refreshToken)  {
 
         const oAuth2Client = new google.auth.OAuth2(
             clientId,

@@ -5,7 +5,7 @@ import documentsRoutes from './routes/documents.routes.js'
 import authRoutes from './routes/auth.routes.js'
 import usersRoutes from './routes/user.routes.js'
 import { createRoles } from "./libs/initial.js"
-import createFolder from './routes/mail.routes.js'
+import googleRoutes from './routes/google.routes.js'
 import cors from 'cors'
 
 const app  = express()
@@ -39,6 +39,6 @@ app.use('/api/documents',documentsRoutes)   //importar Documents
 app.use('/api/auth', authRoutes)
 app.use('/api/users', usersRoutes)
 
-app.use('/api/drive', createFolder)
+app.use('/api/', googleRoutes)
 
 export default app
