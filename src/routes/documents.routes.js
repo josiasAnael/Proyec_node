@@ -7,11 +7,11 @@ import {authjwt} from "../middlewares/index.js";
 const router = Router()
 
 
-router.get ('/',[authjwt.verifyToken, authjwt.isAdmin] ,DocumentsController.getDocuments)
 
+router.get ('/',[authjwt.verifyToken, authjwt.isAdmin] ,DocumentsController.getDocuments)
 router.post('/',[authjwt.verifyToken, authjwt.isUser],DocumentsController.createDocument)
 
-router.get('/:id', DocumentsController.getDocumentbyId)
+router.get('/:id?',[authjwt.verifyToken] ,DocumentsController.getDocumentbyUserId)
 
 router.put('/:id', [authjwt.verifyToken, authjwt.isAdmin],DocumentsController.updateDocumentById)
 

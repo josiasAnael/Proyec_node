@@ -70,3 +70,16 @@ export const uploadFile = async (req, res)  => {
   }
 };
 
+
+export const getUrlFile = async (req, res) => {
+  try {
+    const { CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN } = process.env;
+    const service = new GoogleDriveService(CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN);
+    const {fileId} =  req.query;
+    const url = await service.getUrl(fileId);
+    res.status(200).json(url);
+  } catch (error) {
+    res.status(401).json({ message: `error al obtener el folder ${error}`})  
+  }
+}
+

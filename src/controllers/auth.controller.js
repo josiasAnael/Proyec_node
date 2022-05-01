@@ -48,8 +48,8 @@ export const  signIn = async(req, res)=>{  //inicio de sesion
     try {
 
         const {password, accountnumber}= req.body;
-        if (password==null||password.length==0) res.status(403).json({message: "password required"});
-        if (accountnumber==null||accountnumber.trim().length==0) res.status(403).json({message: "accountnumber required"});
+        if (!password) res.status(403).json({message: "password required"});
+        if (!accountnumber) res.status(403).json({message: "accountnumber required"});
         const userFound = await User.findOne({accountnumber:accountnumber}).populate("roles")//enviamos el rol del usuario
         console.log(req.body)
         console.log(userFound)

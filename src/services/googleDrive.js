@@ -45,7 +45,7 @@ export class GoogleDriveService{
                 if (err) {
                     return reject(err);
                 }
-                return resolve(res.data.files ? res.data.files[0].id : null);
+                return resolve(res.data.files.length>0 ? res.data.files[0].id : null);
             });
         });
     };
@@ -98,6 +98,22 @@ export class GoogleDriveService{
                 return resolve(res.data.files);
             });
         });
+    }
+
+    async getUrl(fileId) {
+        await this.driveClient.permissions.create({
+            fileId: fileId,
+            requestBody: {
+              role: 'reader',
+              type: 'anyone',
+            }
+        });
+        return  await this.driveClient.files.get({
+            fileId: fileId,
+            fields: 'webViewLink'
+        }).then(response => 
+            response.data.webViewLink
+        );
     }
 } 
 

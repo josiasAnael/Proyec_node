@@ -73,6 +73,23 @@ export const getDocumentbyId = async (req, res)=>{
         res.status(401).json(`error al obtener Id Documento ${error}`)   
     }
 }
+export const getDocumentbyUserId = async (req, res)=>{
+    try {
+        const user = req.userLogged;
+        if (!user) return res.status(400).json({message: "user is required"})
+        if(user.roles=="admin"){
+            const document = await Document.find({user: req.query.id})
+            res.status(200).json(document)
+        }
+        else{
+            const documents = await Document.find({user: user._id})
+            console.log('documents', documents)
+            res.status(200).json(documents)
+        }
+    } catch (error) {
+        res.status(401).json(`error al obtener Id Documento ${error}`)   
+    }
+}
 
 //Actulizar el documento por Id
 export const updateDocumentById = async (req, res)=>{
