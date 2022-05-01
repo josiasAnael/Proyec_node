@@ -17,17 +17,21 @@ const typeDocument = [
 
 
 export const checkDocument = async (req, res, next) => {
-    const {name } = req.body;
-    const user = req.userLogged;
-    if (!name ) return res.status(400).json({message: "name and fileId are required"})
-    if(typeDocument.indexOf(name) < 0) return res.status(400).json({message:"nombre de documento no valido"})
-    const document = await Document.findOne({ name, user: user._id  });
-    if (document) {
-        return res.status(400).json({
-            message: "El documento ya existe",
-        });
+    try {
+        const {name } = req.body;
+        const user = req.userLogged;
+        if (!name ) return res.status(400).json({message: "name and fileId are required"})
+        if(typeDocument.indexOf(name) < 0) return res.status(400).json({message:"nombre de documento no valido"})
+        const document = await Document.findOne({ name, user: user._id  });
+        if (document) {
+            return res.status(400).json({
+                message: "El documento ya existe",
+            });
+        }
+        next();
+    } catch (error) {
+        console.log(error)
     }
-    next();
 }
 
 //crear el documento
