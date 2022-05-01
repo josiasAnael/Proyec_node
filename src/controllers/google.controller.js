@@ -1,6 +1,7 @@
 
 import { GoogleMailService } from "../services/googleMail.js";
 import { GoogleDriveService } from "../services/googleDrive.js";
+import { createDocument } from "./documents.controller.js";
 
 
 export const sendEmail = async (req, res) => {
@@ -33,6 +34,23 @@ export const sendEmail = async (req, res) => {
 export const uploadFile = async (req, res)  => {
   try {
     const{file}= req.files
+    const{name}= req.body
+
+    if(!file){
+      return res.status(400).json({
+        message: "No se ha enviado el archivo",
+      });
+    }
+    if (!name) {
+      return res.status(400).json({
+        message: "No se ha enviado el nombre del archivo",
+      });
+    }
+    if(/(.pdf)$/i.test(file.name)==false){
+      return res.status(400).json({
+        message: "El archivo no es un pdf",
+      });
+    }
     const { CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN } = process.env;
 
     const service = new GoogleDriveService(CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN);
@@ -44,14 +62,9 @@ export const uploadFile = async (req, res)  => {
     if (!folderId) {
       folderId = await service.createFolder(user.accountnumber);
     }
-    const fileuploaded = await service.saveFile(file.name, file.tempFilePath, file.mimetype, folderId);
-
-    res.json({
-      message: "Archivo subido",
-      fileuploaded,
-    });
-
-
+    const fileuploaded = await service.saveFile(`${name}.pdf`, file.tempFilePath, file.mimetype, folderId);
+    req.body.fileId = fileuploaded.id;
+    createDocument(req, res);
   } catch (error) {
     res.status(401).json({ message: `error al crear el folder ${error}`})  
   }

@@ -16,27 +16,28 @@ const typeDocument = [
 ]
 
 
+export const checkDocument = async (req, res, next) => {
+    const {name } = req.body;
+    const user = req.userLogged;
+    if (!name ) return res.status(400).json({message: "name and fileId are required"})
+    if(typeDocument.indexOf(name) < 0) return res.status(400).json({message:"nombre de documento no valido"})
+    const document = await Document.findOne({ name, user: user._id  });
+    if (document) {
+        return res.status(400).json({
+            message: "El documento ya existe",
+        });
+    }
+    next();
+}
+
 //crear el documento
 export const createDocument = async (req, res)=>{
     try{
-        const{name, url} = req.body
-        if (!name || !url) return res.status(400).json({message: "name and url are required"})
-        if(typeDocument.indexOf(name) < 0) return res.status(400).json({message:"nombre de documento no valido"})
-        
-        const user = await User.findOne({a: req.userId})
-        
-        const documents = Document.find({name, user: user._id})
-        console.log(user._id);
-        
-        
-        if((await documents).length) {
-            return res.status(400).json({message: 'el documento ya existe'})
-        }
-        else{
-            const newDocument = new Document({name, url, user: user._id})
-            const documentSaved = await newDocument.save()
-            res.status(201).json(documentSaved)
-        }
+        const{name, fileId} = req.body
+        const user = req.userLogged;
+        const newDocument = new Document({name, fileId, user: user._id})
+        const documentSaved = await newDocument.save()
+        res.status(201).json(documentSaved)
     }
     catch(error){
         res.status(401).json(`Error al crear un documento ${error}`)

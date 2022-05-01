@@ -71,23 +71,32 @@ export class GoogleDriveService{
         })
     };
     getFile(fileId) {
-        return this.driveClient.files.get({
-            fileId: fileId,
-            alt: 'media',
+        let _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.driveClient.files.get({
+                fileId: fileId,
+                alt: 'media',
+            }, function (err, res) {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(res.data);
+            });
         });
     }
 
     getAllFiles(folderId) {
-        return this.driveClient.files.list({
-            q: "mimeType != 'application/vnd.google-apps.folder' and '".concat(folderId, "' in parents"),
-            fields: 'files(id, name)',
-        });
-    }
-
-    geturlFile(fileId) {
-        return this.driveClient.files.get({
-            fileId: fileId,
-            alt: 'media',
+        let _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.driveClient.files.list({
+                q: "mimeType != 'application/vnd.google-apps.folder' and '".concat(folderId, "' in parents"),
+                fields: 'files(id, name)',
+            }, function (err, res) {    
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(res.data.files);
+            });
         });
     }
 } 
