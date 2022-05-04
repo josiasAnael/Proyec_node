@@ -10,7 +10,7 @@ export const verifyToken = async(req, res, next)=>{
         if (!token) return res.status(403).json({message:"no token provided"})
         const decoded = jwt.verify(token,config.SECRET)
         req.userId = decoded.id
-        const user = await User.findOne({accountnumber: req.userId})
+        const user = await User.findOne({accountnumber: req.userId}).populate("roles")  
         if (!user) return res.status(404).json({message:"user no found"})
         //console.log(decoded)
         req.userLogged = user

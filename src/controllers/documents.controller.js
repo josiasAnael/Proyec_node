@@ -87,16 +87,22 @@ export const getDocumentbyId = async (req, res)=>{
 export const getDocumentbyUserId = async (req, res)=>{
     try {
         
-        console.log(req.userLogged)
         const user = req.userLogged;
         if (!user) return res.status(400).json({message: "user is required"})
-        if(user.roles=="admin"){
-            const document = await Document.find({user: req.query.id})
-            res.status(200).json(document)
+        if(user.roles.name=="admin"){
+            const {id } = req.params
+            const [userfind] = await User.find({
+                accountnumber: id
+            })
+
+            if(!userfind) return res.status(400).json({message: "user not found"})
+            console.log(userfind._id);
+            const documents = await Document.find({user: userfind._id})
+            console.log(documents);
+            res.status(200).json(documents)
         }
         else{
             const documents = await Document.find({user: user._id})
-            console.log('documents', documents)
             res.status(200).json(documents)
         }
     } catch (error) {
