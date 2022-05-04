@@ -19,6 +19,9 @@ const typeDocument = [
 export const checkDocument = async (req, res, next) => {
     try {
         const {name } = req.body;
+        //devolver el usuario logeado
+        
+
         const user = req.userLogged;
         if (!name ) return res.status(400).json({message: "name and fileId are required"})
         if(typeDocument.indexOf(name) < 0) return res.status(400).json({message:"nombre de documento no valido"})
@@ -52,6 +55,8 @@ export const createDocument = async (req, res)=>{
 export const getDocuments = async (req, res)=>{
     //retornar todos los documentos por usuario 
     try {   
+        console.log(userLogged);
+        console.log("hola")
         let dataReturn = []
         const users = await User.find()
         for (let i = 0; i < users.length; i++) {
@@ -77,8 +82,12 @@ export const getDocumentbyId = async (req, res)=>{
         res.status(401).json(`error al obtener Id Documento ${error}`)   
     }
 }
+
+
 export const getDocumentbyUserId = async (req, res)=>{
     try {
+        
+        console.log(req.userLogged)
         const user = req.userLogged;
         if (!user) return res.status(400).json({message: "user is required"})
         if(user.roles=="admin"){

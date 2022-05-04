@@ -47,7 +47,7 @@ export const getUsers = (req, res)=>{
             res.json(err)
         })
     } catch (error) {
-        res.status(401).json("Error al obtener los usuario: ${error}")      
+        res.status(401).json(`Error al obtener los usuario: ${error}`)      
     }
 }
 

@@ -8,11 +8,11 @@ const router = Router()
 
 
 router.get ('/',[authjwt.verifyToken, authjwt.isAdmin] ,DocumentsController.getDocuments)
-router.post('/',[authjwt.verifyToken, authjwt.isUser],DocumentsController.createDocument)
+// router.post('/',[authjwt.verifyToken, authjwt.isUser],DocumentsController.createDocument)
 
-router.get('/:id?',[authjwt.verifyToken] ,DocumentsController.getDocumentbyUserId)
+router.get('/:id?',[authjwt.verifyToken],DocumentsController.getDocumentbyUserId)
 
-router.put('/:id', [authjwt.verifyToken, authjwt.isAdmin],DocumentsController.updateDocumentById)
+router.put('/:id', [authjwt.verifyToken],DocumentsController.updateDocumentById)
 
 router.delete('/:id', [authjwt.verifyToken, authjwt.isAdmin], DocumentsController.deleteDocumentById)
 

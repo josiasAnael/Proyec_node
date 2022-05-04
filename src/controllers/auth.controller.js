@@ -44,7 +44,7 @@ export const  signUp = async(req, res)=>{
 }
 
 // 3/2/2022
-export const  signIn = async(req, res)=>{  //inicio de sesion
+export const signIn = async(req, res)=>{  //inicio de sesion
     try {
 
         const {password, accountnumber}= req.body;
