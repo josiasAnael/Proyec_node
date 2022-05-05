@@ -51,10 +51,7 @@ export const signIn = async(req, res)=>{  //inicio de sesion
         if (!password) res.status(403).json({message: "password required"});
         if (!accountnumber) res.status(403).json({message: "accountnumber required"});
         const userFound = await User.findOne({accountnumber:accountnumber}).populate("roles")//enviamos el rol del usuario
-        console.log(req.body)
-        console.log(userFound)
         if (!userFound) return res.status(400).json({message: "User not found"})
-        
         //compara las contraseñas
         const matchPassword = await User.comparePassword(password, userFound.password)
         if (!matchPassword) return res.status(401).json({token: null, message:' invalid user or password '})
@@ -63,7 +60,7 @@ export const signIn = async(req, res)=>{  //inicio de sesion
             expiresIn:86400
         })
         // console.log(token);
-        res.json({token})
+        res.json({token, user: userFound})
     } catch (error) {
         res.status(404).json(`Inicio de sesion no valido ${error} `)
         console.log(error)
