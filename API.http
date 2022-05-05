@@ -79,7 +79,7 @@ Authorization: Bearer {{token}}
 
 
 ###
-@id_document= 070319999
+@id_document= 070319998 
 GET {{hostname}}/documents/{{id_document}} HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}
