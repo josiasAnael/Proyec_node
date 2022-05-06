@@ -39,9 +39,11 @@ export const createUser = async (req, res)=>{
 
 export const getUsers = (req, res)=>{
     try {
-        User.find()
+
+        // getting all the users whit roles "user"
+        User.find().populate('roles')
         .then(users =>{
-            res.json(users)
+            res.json(users.filter(x=>x.roles.name==="user"))
         })
         .catch(err =>{
             res.json(err)

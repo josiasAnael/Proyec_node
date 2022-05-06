@@ -18,4 +18,3 @@ const documentSchema = new Schema({
 
 export default model('Document', documentSchema)
 
-

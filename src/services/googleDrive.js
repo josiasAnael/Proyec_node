@@ -115,6 +115,13 @@ export class GoogleDriveService{
             response.data.webViewLink
         );
     }
+
+    async deleteFile(fileId) {
+        await this.driveClient.files.delete({
+            fileId: fileId,
+        });
+        
+    }
 } 
 
 

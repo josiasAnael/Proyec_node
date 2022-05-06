@@ -12,7 +12,7 @@ const router = Router()
 
 router.get('/:id?',[authjwt.verifyToken],DocumentsController.getDocumentbyUserId)
 
-router.put('/:id', [authjwt.verifyToken],DocumentsController.updateDocumentById)
+router.put('/:id', [authjwt.verifyToken],DocumentsController.updateStatusDocument)
 
 router.delete('/:id', [authjwt.verifyToken, authjwt.isAdmin], DocumentsController.deleteDocumentById)
 

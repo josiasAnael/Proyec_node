@@ -31,7 +31,7 @@ export const sendEmail = async (req, res) => {
 };
 
 //<!------------GOOGLE DRIVE----------!>
-export const uploadFile = async (req, res)  => {
+export const uploadFile = async (req, res, next)  => {
   try {
     const{file}= req.files
     const{name}= req.body
@@ -64,7 +64,7 @@ export const uploadFile = async (req, res)  => {
     }
     const fileuploaded = await service.saveFile(`${name}.pdf`, file.tempFilePath, file.mimetype, folderId);
     req.body.fileId = fileuploaded.id;
-    createDocument(req, res);
+    next();
   } catch (error) {
     res.status(401).json({ message: `error al crear el folder ${error}`})  
   }
@@ -81,5 +81,14 @@ export const getUrlFile = async (req, res) => {
   } catch (error) {
     res.status(401).json({ message: `error al obtener el folder ${error}`})  
   }
+}
+
+export const deleteFile = async (req, res,next) => {
+  const { CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN } = process.env;
+  const service = new GoogleDriveService(CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN);
+  const {id} =  req.params;
+  await service.deleteFile(id);
+  req.body.fileId = '';
+  next();
 }
 

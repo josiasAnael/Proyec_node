@@ -36,6 +36,26 @@ export const checkDocument = async (req, res, next) => {
         console.log(error)
     }
 }
+export const isExist = async (req, res, next) => {
+    try {
+        const {name } = req.body;
+        //devolver el usuario logeado
+
+        const user = req.userLogged;
+        if (!name ) return res.status(400).json({message: "name and fileId are required"})
+        if(typeDocument.indexOf(name) < 0) return res.status(400).json({message:"nombre de documento no valido"})
+        const document = await Document.findOne({ name, user: user._id  });
+        if (!document) {
+            return res.status(400).json({
+                message: "El documento no existe",
+            });
+        }
+        req.body.documentId = document._doc._id;
+        next();
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 //crear el documento
 export const createDocument = async (req, res)=>{
@@ -55,8 +75,6 @@ export const createDocument = async (req, res)=>{
 export const getDocuments = async (req, res)=>{
     //retornar todos los documentos por usuario 
     try {   
-        console.log(userLogged);
-        console.log("hola")
         let dataReturn = []
         const users = await User.find()
         for (let i = 0; i < users.length; i++) {
@@ -113,9 +131,8 @@ export const getDocumentbyUserId = async (req, res)=>{
 //Actulizar el documento por Id
 export const updateDocumentById = async (req, res)=>{
     try{
-        const updateDocument = await Document.findByIdAndUpdate(req.params.id, req.body, {
-            new: true
-        })
+        const {fileId,documentId} = req.body
+        const updateDocument = await Document.findByIdAndUpdate(documentId, {fileId, status: 'Pending'}, {new: true})
         res.status(200).json(updateDocument) //no hay contenido pero a sido satisfactorio
     
     } catch (error) {
@@ -126,7 +143,9 @@ export const updateDocumentById = async (req, res)=>{
 //Actulizar el status del documento
 export const updateStatusDocument = async (req, res)=>{
     try{
-        const updateDocument = await Document.findByIdAndUpdate(req.params.id, {status: req.body.status}, {
+
+        const { status , feedback} = req.body
+        const updateDocument = await Document.findByIdAndUpdate(req.params.id, {status,feedback}, {
             new: true
         })
         res.status(200).json(updateDocument) //no hay contenido pero a sido satisfactorio
