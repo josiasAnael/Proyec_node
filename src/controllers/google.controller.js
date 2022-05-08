@@ -11,7 +11,17 @@ export const sendEmail = async (req, res) => {
     await service.init(CLIENT_ID, CLIENT_SECRET, REDITECT_URL, REFRESH_TOKEN);
     const user = req.userLogged;
     let contentHTML = ``;
-    contentHTML += `<h1>Hola ${user.username}</h1>`;
+    contentHTML += `<h1>Hola ${user.username},</h1>
+    Para restablecer tu contraseña de Snapchat, da clic en el siguiente enlace:
+    <br>
+    <a href="${process.env.URL_APP}/reset-password/${user.resetPasswordToken}">Restablecer contraseña</a>
+    <br>
+    <br>
+    <label>Si no quieres restablecer tu contraseña, puedes ignorar este mensaje; probablemente alguien escribió tu nombre de usuario o tu email por error.</label>
+    <br>
+    <br>
+    <div>¡Gracias!</div>
+    `;
     console.log('user', user)
     service.sendMail(user.email, contentHTML, "Bienvenido a la pagina web de Unicah").then((response) => {
       res.status(200).json({

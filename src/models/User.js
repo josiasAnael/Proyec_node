@@ -28,10 +28,6 @@ const userSchema = new Schema({
         type: String,
         unique:false
     },
-    folderId:{
-        type: String,
-        default:""
-    },
     roles:{
         type: Schema.Types.ObjectId,
         ref: "Role",
