@@ -6,28 +6,31 @@ import Role from '../models/Role.js';
 
 export const createUser = async (req, res)=>{
     try{
-        const {_id,username,email,password,career,roles} = req.body
+        const {username,accountNumber ,email,password,career} = req.body
+        var accountnumber= accountNumber;
+        //validar que no exista el usuario
+        const user = await User.findOne({username})
+        if(user) return res.status(400).json({message: "El usuario ya existe"})
+        //validar que no exista el email
+        const userEmail = await User.findOne({email})
+        if(userEmail) return res.status(400).json({message: "El email ya existe"})
+        //validar que no exista el numero de cuenta
+        const userAccountNumber = await User.findOne({accountnumber})
+        if(userAccountNumber) return res.status(400).json({message: "El numero de cuenta ya existe"})
+        
+        
 
         const newUser = new User({ 
-            accountNumber,
+            accountnumber,
             username,
             email,
             password,
             career,
         })
-
          // encrypting password
         newUser.password = await User.encryptPassword(newUser.password);
-        console.log(req.body.roles)
-
-        if (req.body.roles){
-            const foundRoles = await Role.find({name:{ $in: roles }})
-            newUser.roles = foundRoles.map((role) => role._id)
-        }
-        else{
-            const role = await Role.findOne({name: "user"})    //designa un rol por defecto
-            newUser.roles = [role._id]
-        }
+        const role = await Role.findOne({name: "user"})    //designa un rol por defecto
+        newUser.roles = role._id
 
         // saving the new user
         newUser.save();
@@ -68,10 +71,23 @@ export const getUser = (req, res)=>{
     }
 }
 
-export const updateUser = (req, res)=>{
+export const updateUser =  async (req, res)=>{
     try {
+        const {id }= req.params
+        const {username,accountNumber,email,career,roles,status,InitPractice, EndPractice} = req.body
         
-       User.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        var accountnumber= accountNumber;
+        const rolesId = await Role.findOne({name:{ $in: roles }}).then(role => role._id);
+        User.findByIdAndUpdate(id, {
+            username,
+            email,
+            accountnumber,
+            career,
+            roles: rolesId,
+            InitPractice,
+            EndPractice,
+            status        
+        }, {new: true})
         .then(user =>{
             res.json(user)
         })
@@ -99,7 +115,7 @@ export const deleteUser = (req, res)=>{
 }
 
 export const updatePassword = (req, res)=>{
-    try {
+    try{
         User.findById(req.params.id)
         .then(user =>{
             user.password = req.body.password

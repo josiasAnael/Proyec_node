@@ -39,7 +39,7 @@ const userSchema = new Schema({
     },
     EndPractice:{
         type: Date,
-        
+        default: (Date.now() + (1000 * 60 * 60 * 24 * 90))
     },
     status:{
         type: Boolean,
