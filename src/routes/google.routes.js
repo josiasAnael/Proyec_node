@@ -4,7 +4,7 @@ import { getUrlFile, sendEmail, uploadFile,deleteFile } from '../controllers/goo
 import {authjwt} from "../middlewares/index.js";
 
 const router = Router()
-router.post('/mail',[authjwt.verifyToken], sendEmail)
+// router.post('/mail',[authjwt.verifyToken], sendEmail)
 
 router.post('/upload', [authjwt.verifyToken, checkDocument, uploadFile],createDocument)
 router.post('/upload/:id', [authjwt.verifyToken, isExist ,deleteFile, uploadFile], updateDocumentById)

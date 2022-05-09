@@ -31,5 +31,11 @@ router.put('/updatePassword/:id', [
     authjwt.isAdmin,
 ], userController.updatePassword)
 
+router.get('/profile', [authjwt.verifyToken], userController.getProfile)
+router.post('/sendCode', [authjwt.verifyToken,authjwt.isAdmin], userController.sendCode)
+router.post('/verifyCode', [authjwt.verifyToken,authjwt.isAdmin], userController.verifyCode)
+
+
+
 
 export default router;
