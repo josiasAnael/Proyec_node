@@ -32,6 +32,7 @@ export const createUser = async (req, res) => {
 
     // saving the new user
     newUser.save();
+    res.json({ message: "Usuario creado" });
   } catch (error) {
     res.status(404).json(`Error al crear un usuario: ${error}`);
   }
