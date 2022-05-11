@@ -26,14 +26,11 @@ router.put('/updateUser/:id', [
 
 
 /* update password */
-router.put('/updatePassword/:id', [
-    authjwt.verifyToken,
-    authjwt.isAdmin,
-], userController.updatePassword)
+router.put('/updatePassword/:id', userController.updatePassword)
 
 router.get('/profile', [authjwt.verifyToken], userController.getProfile)
-router.post('/sendCode', [authjwt.verifyToken,authjwt.isAdmin], userController.sendCode)
-router.post('/verifyCode', [authjwt.verifyToken,authjwt.isAdmin], userController.verifyCode)
+router.post('/sendCode', userController.sendCode)
+router.post('/verifyCode',  userController.verifyCode)
 
 
 

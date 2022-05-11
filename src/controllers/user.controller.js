@@ -148,10 +148,13 @@ export const verifyCode = async (req, res) => {
   try {
     const { code, email } = req.body;
     const user = await User.findOne({ email });
-    if (user.code === code) {
-      res.json({ message: "El codigo es correcto" });
+    if (user.code == code) {
+      let code = Math.floor(Math.random() * (9999 - 1000)) + 1000;
+      user.code = code;
+      user.save();
+      res.json({ message: "El codigo es correcto" ,code,id:user._id});
     } else {
-      res.status(401).json({ message: "El codigo es incorrecto" });
+      res.status(401).json({ message: "El codigo es incorrecto"});
     }
   } catch (error) {
     res.status(401).json(`Error al verificar el codigo ${error}`);
