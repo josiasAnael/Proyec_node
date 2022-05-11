@@ -7,7 +7,7 @@ const router = Router()
 
 
 
-// router.get ('/',[authjwt.verifyToken, authjwt.isAdmin] ,DocumentsController.getDocuments)
+//'/',[authjwt.verifyToken] ,DocumentsController.getDocuments)
 // router.post('/',[authjwt.verifyToken, authjwt.isUser],DocumentsController.createDocument)
 
 router.get('/:id?',[authjwt.verifyToken],DocumentsController.getDocumentbyUserId)

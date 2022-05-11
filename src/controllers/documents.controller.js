@@ -101,6 +101,8 @@ export const getDocumentbyId = async (req, res)=>{
     }
 }
 
+//obtener documento del usuario logeado
+
 
 export const getDocumentbyUserId = async (req, res)=>{
     try {
